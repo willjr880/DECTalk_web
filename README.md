@@ -1,59 +1,25 @@
-# DECTalk_webservice
-Simple webservice for DECTalk
+# DECTalk_web
+Simple web service for DECTalk
 
-This is a nodejs-based webservice for DECTalk. It assumes you have a server to host it on, a URL to send/receive data with. SSL certificates are optional. 
+This is a nodejs-based webservice for DECTalk. 
+It can be used by other docker containers (such as DECTalk_DiscordBot) on the same host and network dectalk_net, via http://dectalk_web:3000
+It is also on http://localhost:3000 by default where you can go on to host it on the web (perhaps via reverse proxy using Caddy, Traefik et al)
 
 ## Install:
 
 * Clone this repository
+* Edit docker-compose.yml to your liking
+* docker-compose up -d
 
-### If using SSL:
-* Update the docker-compose file arg "ssl=false" to "ssl=true"
-* Uncomment the SSL ports
-* Include server.crt and server.key in the /ssl/ directory of the repo
-
-docker-compose up -d
-
-The url should now be accessible on the requested port.
+The url should now be accessible based on your config (default will be http://dectalk_web:3000 and http://localhost:3000).
 
 ## Usage:
 
-```[your_URL_here]/say?text=[DECTalk text here, including phoneme data etc.]```
+```http://dectalk_web:3000/say?text=[DECTalk text here, including phoneme data etc.]```
+(or POST data accepted instead)
 
 Returns say.wav with the spoken audio.
 
-
-```[your_URL_here]/say?b64&text=[Base64 encoded DECTalk text here w/phoneme data]```
+```http://dectalk_web:3000/say?b64&text=[Base64 encoded DECTalk text here w/phoneme data]```
 
 Returns say.wav with the spoken audio - expects the DECTalk text to be base64 encoded first.
-
-
-# Twitch integration w/Streamelements and OBS
-While there are many use cases for the service, my initial goal was to use this with twitch by issuing !tts commands in the streamer's chatroom and having DECTalk respond. Provided your overlay is already set up (which is well documented) You can create a custom widget in Streamelements containing the following JS code:
-```
-window.addEventListener("onEventReceived", function ( obj ) {
-    const data = obj.detail.event && obj.detail.event.data;
-    console.log("data=", data);
-    if( !data ) {
-        return;
-    }
-
-    if( data.text.indexOf("!tts ") !== 0 ) {
-        return;
-    }
-
-    const text = data.text.substring(5);
-    speak(text);
-});
-
-function speak( text ) {
-    const src = "https://[your_URL_here]/say" + "?b64=1&text=" + btoa(text);
-    const audioTag = document.createElement("AUDIO");
-    audioTag.src = src;
-    audioTag.play();
-    document.body.appendChild(audioTag);
-    audioTag.addEventListener("ended", () => {
-        audioTag.remove();
-    });
-}
-```
