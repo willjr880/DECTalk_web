@@ -1,7 +1,7 @@
 # DECTalk_web
 Simple web service for DECTalk
 
-This is a nodejs-based webservice for DECTalk. 
+This is a nodejs-based webservice for DECTalk. It runs in a docker container.
 It can be used by other docker containers (such as DECTalk_DiscordBot) on the same host and network dectalk_net, via http://dectalk_web:3000
 It is also on http://localhost:3000 by default where you can go on to host it on the web (perhaps via reverse proxy using Caddy, Traefik et al)
 
