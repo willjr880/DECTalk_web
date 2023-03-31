@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DECTalk Webservice</title>
+ </head>
+<body>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Usage</h1>
+      GET or POST (json or urlencoded) the following:<br />
+      say?text=[DECTalk text here, including phoneme data etc.]<br />
+      Returns say.wav with the spoken audio.<br />
+      <br />
+      say?b64&text=[Base64 encoded DECTalk text here w/phoneme data]<br />
+      Returns say.wav with the spoken audio - expects the DECTalk text to be base64 encoded first.<br />
+    </div>
+  </div>
+    
+</body>
+</html>

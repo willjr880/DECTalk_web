@@ -1,0 +1,28 @@
+version: '3'
+services:
+  dectalk_web:
+    restart: unless-stopped
+    build:
+      context: .
+      args:
+      # SHOW_USAGE - set whether to show the usage page when the page root is accessed
+       - 'SHOW_USAGE=false'
+      # USE_APIKEY - set whether to use an APIKey when making requests to the web service
+       - 'USE_APIKEY=true'
+      # APIKEY - the API key used when API Keys are enabled. Update accordingly.
+       - 'APIKEY=abc123'
+      # APP_NODE_ENV - set the nodejs environment [production, development] - errors will appear in the response in development mode
+       - 'APP_NODE_ENV=production'
+      # SVC_PATH - set the path to put the service in the docker container (can be left as-is)
+       - 'SVC_PATH=/service'
+      # TEMP_PATH - set where to put the generated .wav files (can be left as-is)
+       - 'TEMP_PATH=/tmp'
+      # CLEANUP_FREQUENCY - the frequency of the periodic task to clean up wav files from the temp path [15min, daily, hourly, monthly, weekly]
+       - 'CLEANUP_FREQUENCY=hourly'
+    image: dectalk_web
+    container_name: dectalk_web
+    ports:
+      - 3000:3000
+networks:
+    default:
+        name: dectalk_net
